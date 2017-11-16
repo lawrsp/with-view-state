@@ -1,0 +1,36 @@
+{
+    "name": "with-view-state",
+    "version": "1.0.0",
+    "description": "use redux to store view state",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build-lib": "rimraf lib && babel src --copy-files --extensions .js --out-dir lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lawrsp/with-view-state.git"
+    },
+    "keywords": [
+        "redux",
+        "react",
+        "state"
+    ],
+    "author": "lawr",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/lawrsp/with-view-state/issues"
+    },
+    "homepage": "https://github.com/lawrsp/with-view-state#readme",
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-0": "^6.24.1",
+        "react": "^16.1.1",
+        "rimraf": "^2.6.2"
+    },
+    "dependencies": {
+        "hoist-non-react-statics": "^2.3.1"
+    }
+}
