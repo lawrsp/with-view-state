@@ -3,8 +3,9 @@ make redux to store some state
 
 # Introduction
 
-people use redux may confused when to use setState and when to use dispatch
-this package is mean to store the state to redux simply
+people use redux may confused when to use setState and when to use dispatch.
+
+this package is aimed to store the state to redux simply
 
 **usefull for these situations:**
 
