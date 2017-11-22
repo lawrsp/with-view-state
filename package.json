@@ -1,6 +1,6 @@
 {
     "name": "with-view-state",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "description": "use redux to store view state",
     "main": "index.js",
     "scripts": {
