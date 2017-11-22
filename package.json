@@ -1,6 +1,6 @@
 {
     "name": "with-view-state",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "use redux to store view state",
     "main": "index.js",
     "scripts": {
@@ -27,6 +27,10 @@
         "babel-preset-env": "^1.6.1",
         "babel-preset-react": "^6.24.1",
         "babel-preset-stage-0": "^6.24.1",
+        "eslint": "^4.11.0",
+        "eslint-config-prettier": "^2.8.0",
+        "eslint-plugin-prettier": "^2.3.1",
+        "prettier": "^1.8.2",
         "react": "^16.1.1",
         "rimraf": "^2.6.2"
     },
@@ -34,3 +38,4 @@
         "hoist-non-react-statics": "^2.3.1"
     }
 }
+

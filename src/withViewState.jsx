@@ -1,133 +1,62 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import hoistNonReactStatic from 'hoist-non-react-statics';
+
+import { updateViewState, deleteViewState } from './actions';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 
 /**
- * 为一个Compoent
+ * add view state to redux
  *
- * @param  {[type]} ComponentNode [description]
- * @return {[type]}               [description]
  */
-export default function withIndicator(ComponentNode) {
-  const id = Math.random().toString();
-  class indicatorComponet extends Component {
-    propTypes: {}
+export default function withViewState(config) {
+  const id = config.id || Math.random().toString();
+  const reducer = config.reducerName || 'viewState';
+  const propName = config.propName || 'viewState';
 
-    constructor(prop) {
-      super(prop);
-      this.setIndicator = this.setIndicator.bind(this);
-      this.dispatchWithIndicator = this.dispatchWithIndicator.bind(this);
-    }
-
-    componentWillMount() {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'views/update',
-        payload: {
-          id,
-        },
-      });
-    }
-
-    componentWillUnmount() {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'views/delete',
-        payload: {
-          id,
-        },
-      });
-    }
-
-    setIndicator(obj) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'views/update',
-        payload: {
-          id,
-          ...obj,
-        },
-      });
-    }
-
-    dispatchWithIndicator(action, indicator, sucessInfo) {
-      const { dispatch } = this.props;
-      const setIndicator = this.setIndicator;
-
-      if (indicator === undefined) {
-        dispatch(action);
-        return;
+  return ComponentNode => {
+    class indicatorComponet extends Component {
+      constructor(prop) {
+        super(prop);
       }
 
-      let ind;
-      let unInd;
-      if (typeof indicator === 'string') {
-        ind = {
-          [indicator]: true,
-        };
-        unInd = {
-          [indicator]: false,
-        };
-      }
-      if (typeof indicator === 'object') {
-        ind = indicator;
-        unInd = Object.keys(indicator).reduce((a, b) => {
-          return {
-            ...a,
-            [b]: false,
-          }
-        }, {});
+      setViewState = st => {
+        const { dispatch } = this.props;
+        dispatch(updateViewState(id, st));
+      };
+
+      componentWillMount() {
+        const { dispatch } = this.props;
+        dispatch(updateViewState(id, {}));
       }
 
-      setIndicator(ind);
-      const oldComplete = action.meta ? action.meta.onComplete || (() => {}) : (() => {});
-
-      let onSuccess = action.meta && action.meta.onSuccess || (() => {});
-
-      if (sucessInfo) {
-        const oldSucess = action.meta && action.meta.onSuccess;
-        onSuccess = (args) => {
-          if (typeof oldSucess === 'function') {
-            oldSucess(args);
-          }
-        }
+      componentWillUnmount() {
+        const { dispatch } = this.props;
+        dispatch(deleteViewState(id));
       }
-      dispatch({
-        ...action,
-        meta: {
-          ...action.meta,
-          onSuccess,
-          onComplete() {
-            oldComplete();
-            setIndicator(unInd);
-          },
-        },
-      });
+
+      render() {
+        return (
+          <ComponentNode {...this.props} setViewState={this.setViewState} />
+        );
+      }
     }
 
-    render() {
-      const { indicator, ...others } = this.props;
-      return (<ComponentNode
-        indicator={indicator}
-        {...others}
-        setIndicator={this.setIndicator}
-        dispatchWithIndicator={this.dispatchWithIndicator}
-      />);
+    indicatorComponet.propTypes = {};
+    indicatorComponet.displayName = `withViewState(${getDisplayName(
+      ComponentNode
+    )})`;
+    hoistNonReactStatic(indicatorComponet, ComponentNode);
+
+    function mapStateToProps(store) {
+      const viewState = (store[reducer] && store[reducer][id]) || {};
+      return {
+        [propName]: viewState
+      };
     }
-  }
 
-  indicatorComponet.displayName = `withViewState(${getDisplayName(ComponentNode)})`;
-  hoistNonReactStatic(indicatorComponet, ComponentNode);
-
-  function mapStateToProps({ views }) {
-    const indicator = views[id] || {};
-    return {
-      indicator,
-    };
-  }
-
-  return connect(mapStateToProps)(indicatorComponet);
+    return connect(mapStateToProps)(indicatorComponet);
+  };
 }
-
