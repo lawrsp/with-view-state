@@ -1,6 +1,6 @@
 import { UPDATE, DELETE } from './actions';
 
-const views = (state, action) => {
+const views = (state = {}, action) => {
   switch (action.type) {
     case UPDATE: {
       const id = action.meta.id;
@@ -27,3 +27,4 @@ const views = (state, action) => {
 };
 
 export default views;
+
