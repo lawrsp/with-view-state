@@ -26,6 +26,9 @@ export default function withViewState(config) {
         const { dispatch } = this.props;
         dispatch(updateViewState(id, st));
       };
+      setViewStateAction = st => {
+        return updateViewState(id, st);
+      };
 
       componentWillMount() {
         const { dispatch } = this.props;
@@ -39,7 +42,11 @@ export default function withViewState(config) {
 
       render() {
         return (
-          <ComponentNode {...this.props} setViewState={this.setViewState} />
+          <ComponentNode
+            {...this.props}
+            setViewState={this.setViewState}
+            setViewStateAction={this.setViewStateAction}
+          />
         );
       }
     }

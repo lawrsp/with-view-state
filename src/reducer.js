@@ -7,7 +7,8 @@ const views = (state = {}, action) => {
       return {
         ...state,
         [id]: {
-          ...state[id],
+          //@TODO: replace all?
+          // ...state[id],
           ...action.payload
         }
       };
@@ -27,4 +28,3 @@ const views = (state = {}, action) => {
 };
 
 export default views;
-
