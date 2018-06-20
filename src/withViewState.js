@@ -119,12 +119,12 @@ export default function withViewState(config, parentMapStateToProps, ...rest) {
     )})`;
     hoistNonReactStatic(viewComponent, ComponentNode);
 
-    function mapStateToProps(store) {
+    function mapStateToProps(store, ownProps) {
       const viewState = (store[reducer] && store[reducer][id]) || {};
 
       if (parentMapStateToProps) {
         return {
-          ...parentMapStateToProps(store),
+          ...parentMapStateToProps(store, ownProps),
           [propName]: viewState
         };
       }
