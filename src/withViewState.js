@@ -27,11 +27,10 @@ function mergeAction() {
  * add view state to redux
  *
  */
-export default function withViewState(config) {
+export default function withViewState(config, parentMapStateToProps, ...rest) {
   const id = config.id || Math.random().toString();
   const reducer = config.reducerName || 'viewState';
   const propName = config.propName || 'viewState';
-  const parentMapStateToProps = config.mapStateToProps;
 
   return ComponentNode => {
     class viewComponent extends Component {
@@ -134,6 +133,6 @@ export default function withViewState(config) {
       };
     }
 
-    return connect(mapStateToProps)(viewComponent);
+    return connect(mapStateToProps, ...rest)(viewComponent);
   };
 }
