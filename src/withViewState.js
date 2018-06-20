@@ -56,7 +56,7 @@ export default function withViewState(config) {
         dispatch(deleteViewState(id));
       }
 
-      dispatchWithIndicator(action, indicator) {
+      dispatchWithIndicator = (action, indicator) => {
         const { dispatch } = this.props;
         const setViewStateAction = this.setViewStateAction;
 
@@ -99,7 +99,7 @@ export default function withViewState(config) {
             onCompleteAction
           }
         });
-      }
+      };
 
       render() {
         return (
