@@ -107,6 +107,7 @@ export default function withViewState(config) {
             {...this.props}
             setViewState={this.setViewState}
             setViewStateAction={this.setViewStateAction}
+            dispatchWithIndicator={this.dispatchWithIndicator}
           />
         );
       }
