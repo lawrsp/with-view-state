@@ -31,6 +31,7 @@ export default function withViewState(config) {
   const id = config.id || Math.random().toString();
   const reducer = config.reducerName || 'viewState';
   const propName = config.propName || 'viewState';
+  const parentMapStateToProps = config.mapStateToProps;
 
   return ComponentNode => {
     class viewComponent extends Component {
@@ -121,6 +122,13 @@ export default function withViewState(config) {
 
     function mapStateToProps(store) {
       const viewState = (store[reducer] && store[reducer][id]) || {};
+
+      if (parentMapStateToProps) {
+        return {
+          ...parentMapStateToProps(store),
+          [propName]: viewState
+        };
+      }
       return {
         [propName]: viewState
       };
