@@ -7,8 +7,8 @@ const views = (state = {}, action) => {
       return {
         ...state,
         [id]: {
-          //@TODO: replace all?
-          // ...state[id],
+          //@NOTICE: merge not replace
+          ...state[id],
           ...action.payload
         }
       };

@@ -7,6 +7,22 @@ import { updateViewState, deleteViewState } from './actions';
 
 const getDisplayName = Comp => Comp.displayName || Comp.name || 'Component';
 
+function mergeAction() {
+  var acts = [];
+  for (var i = 0; i < arguments.length; i++) {
+    const it = arguments[i];
+    if (it) {
+      if (it instanceof Array) {
+        acts = [...acts, ...it];
+      } else {
+        acts = [...acts, it];
+      }
+    }
+  }
+
+  return acts;
+}
+
 /**
  * add view state to redux
  *
@@ -17,7 +33,7 @@ export default function withViewState(config) {
   const propName = config.propName || 'viewState';
 
   return ComponentNode => {
-    class indicatorComponet extends Component {
+    class viewComponent extends Component {
       constructor(prop) {
         super(prop);
       }
@@ -40,6 +56,51 @@ export default function withViewState(config) {
         dispatch(deleteViewState(id));
       }
 
+      dispatchWithIndicator(action, indicator) {
+        const { dispatch } = this.props;
+        const setViewStateAction = this.setViewStateAction;
+
+        if (indicator === undefined) {
+          dispatch(action);
+          return;
+        }
+
+        let ind;
+        let unInd;
+        if (typeof indicator === 'string') {
+          ind = {
+            [indicator]: true
+          };
+          unInd = {
+            [indicator]: false
+          };
+        }
+        if (typeof indicator === 'object') {
+          ind = { ...indicator };
+          unInd = Object.keys(indicator).reduce((a, b) => {
+            return {
+              ...a,
+              [b]: false
+            };
+          }, {});
+        }
+
+        dispatch(setViewStateAction(ind));
+
+        const onCompleteAction = mergeAction(
+          action.meta && action.meta.onCompleteAction,
+          setViewStateAction(unInd)
+        );
+
+        dispatch({
+          ...action,
+          meta: {
+            ...action.meta,
+            onCompleteAction
+          }
+        });
+      }
+
       render() {
         return (
           <ComponentNode
@@ -51,11 +112,11 @@ export default function withViewState(config) {
       }
     }
 
-    indicatorComponet.propTypes = {};
-    indicatorComponet.displayName = `withViewState(${getDisplayName(
+    viewComponent.propTypes = {};
+    viewComponent.displayName = `withViewState(${getDisplayName(
       ComponentNode
     )})`;
-    hoistNonReactStatic(indicatorComponet, ComponentNode);
+    hoistNonReactStatic(viewComponent, ComponentNode);
 
     function mapStateToProps(store) {
       const viewState = (store[reducer] && store[reducer][id]) || {};
@@ -64,6 +125,6 @@ export default function withViewState(config) {
       };
     }
 
-    return connect(mapStateToProps)(indicatorComponet);
+    return connect(mapStateToProps)(viewComponent);
   };
 }
