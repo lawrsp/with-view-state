@@ -120,6 +120,7 @@ export default function withViewState(
 
     function mapDispatchToProps(dispatch, ownProps) {
       const props = {
+        dispatch: dispatch,
         setViewState: st => dispatch(updateViewState(id, st)),
         setViewStateAction: st => updateViewState(id, st),
         dispatchWithIndicator: dispatchWith(dispatch)
@@ -134,6 +135,9 @@ export default function withViewState(
       return props;
     }
 
-    return connect(mapStateToProps, mapDispatchToProps)(viewComponent);
+    return connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(viewComponent);
   };
 }
