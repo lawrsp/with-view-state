@@ -33,7 +33,7 @@ export default combineReducers({
 
 ## 2. wrap your component:
 ```
-import { withViewState } from 'with-view-state'
+import withViewState  from 'with-view-state'
 //  YourComponent : .....
 
 const config = {
@@ -46,28 +46,28 @@ const wrapped = withViewState(config)(YourComponent)
 
 ```
 
-## 3. get/set in your componet 
+## 3. get/set in your componet
 
 ```
 class YourComponent extends Component{
-  
+
   onClick = () => {
     this.props.setViewState({ submitting: true } )
-  } 
+  }
 
   render() {
     ....
     const { viewState } = this.props;
     const { submitting } = viewState;
-    
+
     ....
-  
+
   }
 }
 
 ```
 
-or dummy component: 
+or dummy component:
 ```
 const YouCompoent = ({viewState, setViewState}) => {
   ....

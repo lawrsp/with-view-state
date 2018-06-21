@@ -23,11 +23,57 @@ function mergeAction() {
   return acts;
 }
 
+const dispatchWith = dispatch => (action, indicator) => {
+  if (indicator === undefined) {
+    dispatch(action);
+    return;
+  }
+
+  let ind;
+  let unInd;
+  if (typeof indicator === 'string') {
+    ind = {
+      [indicator]: true
+    };
+    unInd = {
+      [indicator]: false
+    };
+  }
+  if (typeof indicator === 'object') {
+    ind = { ...indicator };
+    unInd = Object.keys(indicator).reduce((a, b) => {
+      return {
+        ...a,
+        [b]: false
+      };
+    }, {});
+  }
+
+  dispatch(updateViewState(id, ind));
+
+  const onCompleteAction = mergeAction(
+    action.meta && action.meta.onCompleteAction,
+    updateViewState(id, unInd)
+  );
+
+  dispatch({
+    ...action,
+    meta: {
+      ...action.meta,
+      onCompleteAction
+    }
+  });
+};
+
 /**
  * add view state to redux
  *
  */
-export default function withViewState(config, parentMapStateToProps, ...rest) {
+export default function withViewState(
+  config,
+  parentMapStateToProps,
+  parentMapDispatchToProps
+) {
   const id = config.id || Math.random().toString();
   const reducer = config.reducerName || 'viewState';
   const propName = config.propName || 'viewState';
@@ -37,14 +83,6 @@ export default function withViewState(config, parentMapStateToProps, ...rest) {
       constructor(prop) {
         super(prop);
       }
-
-      setViewState = st => {
-        const { dispatch } = this.props;
-        dispatch(updateViewState(id, st));
-      };
-      setViewStateAction = st => {
-        return updateViewState(id, st);
-      };
 
       componentWillMount() {
         const { dispatch } = this.props;
@@ -56,60 +94,8 @@ export default function withViewState(config, parentMapStateToProps, ...rest) {
         dispatch(deleteViewState(id));
       }
 
-      dispatchWithIndicator = (action, indicator) => {
-        const { dispatch } = this.props;
-        const setViewStateAction = this.setViewStateAction;
-
-        if (indicator === undefined) {
-          dispatch(action);
-          return;
-        }
-
-        let ind;
-        let unInd;
-        if (typeof indicator === 'string') {
-          ind = {
-            [indicator]: true
-          };
-          unInd = {
-            [indicator]: false
-          };
-        }
-        if (typeof indicator === 'object') {
-          ind = { ...indicator };
-          unInd = Object.keys(indicator).reduce((a, b) => {
-            return {
-              ...a,
-              [b]: false
-            };
-          }, {});
-        }
-
-        dispatch(setViewStateAction(ind));
-
-        const onCompleteAction = mergeAction(
-          action.meta && action.meta.onCompleteAction,
-          setViewStateAction(unInd)
-        );
-
-        dispatch({
-          ...action,
-          meta: {
-            ...action.meta,
-            onCompleteAction
-          }
-        });
-      };
-
       render() {
-        return (
-          <ComponentNode
-            {...this.props}
-            setViewState={this.setViewState}
-            setViewStateAction={this.setViewStateAction}
-            dispatchWithIndicator={this.dispatchWithIndicator}
-          />
-        );
+        return <ComponentNode {...this.props} />;
       }
     }
 
@@ -121,18 +107,33 @@ export default function withViewState(config, parentMapStateToProps, ...rest) {
 
     function mapStateToProps(store, ownProps) {
       const viewState = (store[reducer] && store[reducer][id]) || {};
+      const props = { [propName]: viewState };
 
       if (parentMapStateToProps) {
         return {
-          ...parentMapStateToProps(store, ownProps),
-          [propName]: viewState
+          ...props,
+          ...parentMapStateToProps(store, props)
         };
       }
-      return {
-        [propName]: viewState
-      };
+      return props;
     }
 
-    return connect(mapStateToProps, ...rest)(viewComponent);
+    function mapDispatchToProps(dispatch, ownProps) {
+      const props = {
+        setViewState: st => dispatch(updateViewState(id, st)),
+        setViewStateAction: st => updateViewState(id, st),
+        dispatchWithIndicator: dispatchWith(dispatch)
+      };
+
+      if (parentMapDispatchToProps) {
+        return {
+          ...props,
+          ...parentMapDispatchToProps(dispatch, { ...props, ...ownProps })
+        };
+      }
+      return props;
+    }
+
+    return connect(mapStateToProps, mapDispatchToProps)(viewComponent);
   };
 }
