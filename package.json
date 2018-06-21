@@ -1,6 +1,6 @@
 {
     "name": "with-view-state",
-    "version": "0.1.14",
+    "version": "0.1.15",
     "description": "use redux to store view state",
     "main": "lib/index.js",
     "scripts": {
@@ -23,7 +23,8 @@
     },
     "homepage": "https://github.com/lawrsp/with-view-state#readme",
     "peerDependencies": {
-        "react": ">=15"
+        "react": ">=15",
+        "react-redux": ">=5"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -35,6 +36,7 @@
         "eslint-plugin-prettier": "^2.3.1",
         "prettier": "^1.8.2",
         "react": "^16.4.0",
+        "react-redux": "^5.0.7",
         "rimraf": "^2.6.2"
     },
     "dependencies": {
