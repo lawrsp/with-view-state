@@ -89,8 +89,10 @@ export default function withViewState(
       }
 
       componentWillUnmount() {
-        const { dispatch } = this.props;
-        dispatch(deleteViewState(id));
+        const { dispatch, keepState = false } = this.props;
+        if (!keepState) {
+          dispatch(deleteViewState(id));
+        }
       }
 
       render() {
