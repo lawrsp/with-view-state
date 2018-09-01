@@ -81,7 +81,7 @@ const YouCompoent = ({viewState, setViewState}) => {
 
 # Configure
 
-The configure that the decorator withViewState() accept.
+The configure that the decorator withViewState() accepts.
 
 ## getViewState : Function(store): viewStateStore
 
@@ -101,16 +101,14 @@ default is
 
 ```
 
-this makes props.viewState to get the view state for the view.
-you can set as your usage 
+this makes the component use props.viewState to get the state of the view.
+you can use another function as you wish
 
 ## keepState : Bool || Function(props) Bool
-As default, when a view is unmounted, it's view state will be remove from the store,
-you can set keepState = true to keep it , or set a function to determin according to 
-the props.
+As default, when a view is unmounted, it's view state will be removed from the store,
+you can set keepState = true to keep it , or set a function to determin by the props.
 
-## old: 
-these will be decprecated in future
+## some configures will be deprecated in future: 
 ###  reducerName : String
 set the store name in reducer, default is 'viewState'
 ###  propName: String
@@ -118,7 +116,7 @@ set the props where can get the view state for a view , default is  'viewState'
 
 
 # Props
-The props that generated to give to your decorated form component.
+The props that generated to give to your decorated component.
 
 
 ## setViewStateAction : Function(Object): action
