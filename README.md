@@ -1,6 +1,12 @@
 # with-view-state
 use redux to store some state in view component
 
+# Install
+
+```
+npm install --save with-view-state
+```
+
 # Introduction
 
 people use redux may confused when to use setState and when to use dispatch reducer action.
