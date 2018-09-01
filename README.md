@@ -147,7 +147,7 @@ completed:  viewState = {submitting : false, ...others }
 
 or 
 ```
-idicator = { startDate: "1999-10-20", submitting: true }
+idicator = { spin: "double-bounce" , submitting: true }
 
 on start: viewState = { spin: "double-bounce", submitting: true, ...others }
 completed:  viewState = { spin: false, submitting: false, ...others }
