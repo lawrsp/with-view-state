@@ -30,7 +30,9 @@ export default function withViewState({
   id = Math.random().toString(),
   reducer = 'viewState',
   propName = 'viewState',
-  keepState = false
+  keepState = false,
+  getViewState,
+  mapViewProps
 }) {
   return ComponentNode => {
     class viewComponent extends PureComponent {
@@ -128,9 +130,21 @@ export default function withViewState({
     )})`;
     hoistNonReactStatic(viewComponent, ComponentNode);
 
+    const thGetViewState =
+      getViewState ||
+      function(state) {
+        return state[reducer];
+      };
+    const thMapViewProps =
+      mapViewProps ||
+      function(viewState) {
+        return { [propName]: viewState };
+      };
+
     function mapStateToProps(store) {
-      const viewState = (store[reducer] && store[reducer][id]) || {};
-      return { [propName]: viewState };
+      const state = thGetViewState(store);
+      const viewState = (state && state[id]) || {};
+      return thMapViewProps(viewState);
     }
 
     return connect(mapStateToProps)(viewComponent);

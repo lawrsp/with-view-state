@@ -1,15 +1,19 @@
 {
     "name": "with-view-state",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "use redux to store view state",
-    "main": "lib/index.js",
+    "browser": "lib/index.js",
+    "files": [
+        "lib",
+        "src"
+    ],
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build-lib": "rimraf lib && babel src --copy-files --extensions .js --out-dir lib"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/lawrsp/with-view-state.git"
+        "url": "https://github.com/lawrsp/with-view-state.git"
     },
     "keywords": [
         "redux",
@@ -24,7 +28,8 @@
     "homepage": "https://github.com/lawrsp/with-view-state#readme",
     "peerDependencies": {
         "react": ">=15",
-        "react-redux": ">=5"
+        "react-redux": ">=5",
+        "hoist-non-react-statics": ">=2"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
@@ -38,9 +43,6 @@
         "react": "^16.4.0",
         "react-redux": "^5.0.7",
         "rimraf": "^2.6.2"
-    },
-    "dependencies": {
-        "hoist-non-react-statics": "^2.3.1"
     }
 }
 
