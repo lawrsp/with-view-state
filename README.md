@@ -155,5 +155,5 @@ completed:  viewState = { spin: false, submitting: false, ...others }
 ```
 
 Notice: 
-You may need some async handlers like redux-saga to dispatch the onCompleteAction. 
+You must use some async handlers like redux-saga to dispatch the onCompleteAction. 
 
