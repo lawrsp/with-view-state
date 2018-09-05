@@ -24,7 +24,7 @@ this package is aimed to store the state to redux. Forget setState, enjoy redux!
 ## 1. add the reducer to your reducers
 
 
-```
+```javascript
 import { combineReducers } from 'redux';
 import { reducer as viewState } from 'with-view-state';
 
@@ -38,7 +38,9 @@ export default combineReducers({
 ```
 
 ## 2. wrap your component:
-```
+
+```javascript
+
 import withViewState  from 'with-view-state'
 //  YourComponent : .....
 
@@ -52,7 +54,7 @@ const wrapped = withViewState(config)(YourComponent)
 
 ## 3. get/set in your componet
 
-```
+```javascript
 class YourComponent extends Component{
 
   onClick = () => {
@@ -60,21 +62,18 @@ class YourComponent extends Component{
   }
 
   render() {
-    ....
     const { viewState } = this.props;
     const { submitting } = viewState;
-
-    ....
-
+    // ....
   }
 }
 
 ```
 
 or dummy component:
-```
+```javascript
 const YouCompoent = ({viewState, setViewState}) => {
-  ....
+  //....
 }
 
 ```
@@ -85,7 +84,7 @@ The configure that the decorator withViewState() accepts.
 
 ## getViewState : Function(store): viewStateStore
 
-default is 
+default is
 
 ```
 (store) => store.viewState
@@ -95,7 +94,7 @@ if your reducer is not at `sotre.viewState`, set another function
 
 ## mapViewProps : Function(thisViewState) => props
 
-default is 
+default is
 ```
 (state) => ({viewState: state})
 
@@ -108,7 +107,7 @@ you can use another function as you wish
 As default, when a view is unmounted, it's view state will be removed from the store,
 you can set keepState = true to keep it , or set a function to determin by the props.
 
-## some configures will be deprecated in future: 
+## some configures will be deprecated in future:
 ###  reducerName : String
 set the store name in reducer, default is 'viewState'
 ###  propName: String
@@ -120,7 +119,7 @@ The props that generated to give to your decorated component.
 
 
 ## setViewStateAction : Function(Object): action
-This is a bound action creator for the view, it return the action 
+This is a bound action creator for the view, it return the action
 
 ## setViewState : Function(Object) :Void
 this function dispatch a bound view update action
@@ -133,7 +132,7 @@ with a meta fields onCompleteAction which is the idicator complete action.
 ### indicator:  String || Object
 
 when indicator is a string, it will be as the field name, in start it will be true, on completed, it will be false,
-if indicator is a object, it will be itself on start, and on completed, it will be a object with the same keys, 
+if indicator is a object, it will be itself on start, and on completed, it will be a object with the same keys,
 but every value si false
 
 for explain:
@@ -145,7 +144,7 @@ completed:  viewState = {submitting : false, ...others }
 
 ```
 
-or 
+or
 ```
 idicator = { spin: "double-bounce" , submitting: true }
 
@@ -154,6 +153,6 @@ completed:  viewState = { spin: false, submitting: false, ...others }
 
 ```
 
-Notice: 
-You must use some async handlers like redux-saga to dispatch the onCompleteAction. 
+Notice:
+You must use some async handlers like redux-saga to dispatch the onCompleteAction.
 
