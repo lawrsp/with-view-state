@@ -4,7 +4,7 @@ use redux to store some state in view component
 # Install
 
 ```
-npm install --save with-view-state
+npm install with-view-state --save
 ```
 
 # Introduction
@@ -22,7 +22,6 @@ this package is aimed to store the state to redux. Forget setState, enjoy redux!
 # Usage
 
 ## 1. add the reducer to your reducers
-
 
 ```javascript
 import { combineReducers } from 'redux';
@@ -45,7 +44,7 @@ import withViewState  from 'with-view-state'
 //  YourComponent : .....
 
 const config = {
-  id: 'myComponent-1',      //defualt is a random string, set some name if you need
+  id: 'myComponent',      //defualt is a random string, set some name if you need
 }
 
 const wrapped = withViewState(config)(YourComponent)
@@ -136,20 +135,24 @@ if indicator is a object, it will be itself on start, and on completed, it will 
 but every value si false
 
 for explain:
-```
+```javascript
 indicator = "submitting"
 
-on start :  viewState = {submitting : true, ...others }
-completed:  viewState = {submitting : false, ...others }
+//on start :
+viewState = {submitting : true, ...others }
+//completed:
+viewState = {submitting : false, ...others }
 
 ```
 
 or
-```
+```javascript
 idicator = { spin: "double-bounce" , submitting: true }
 
-on start: viewState = { spin: "double-bounce", submitting: true, ...others }
-completed:  viewState = { spin: false, submitting: false, ...others }
+//on start:
+viewState = { spin: "double-bounce", submitting: true, ...others }
+//completed:
+viewState = { spin: false, submitting: false, ...others }
 
 ```
 
